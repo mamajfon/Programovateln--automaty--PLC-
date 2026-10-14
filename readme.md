@@ -34,25 +34,25 @@ Programovatelné automaty (PLC)
 1. **Rozdělení PLC podle oblasti nasazení:**
    Doplňte do tabulky vhodnou kategorii a konkrétní zástupce vámi vybraných výrobců. Jako vzor poslouží vyplněný řádek pro *Domovní automatizaci a budovy*:
 
-| Oblast nasazení                                           | Vhodná koncepce PLC (kompaktní / modulární / embedded)            | Typický zástupce z portfolia Teco (nebo ekvivalent)                   | Klíčové technické parametry (sběrnice, I/O, napájení, krytí)                                                                                     |
+| Oblast nasazení                                           | Vhodná koncepce PLC (kompaktní / modulární / embedded)            | Typický zástupce z portfolia Teco (nebo ekvivalent)                   | Klíčové technické parametry (sběrnice, I/O, napájení, krytí)                                                                                                    |
 | :-------------------------------------------------------- | :---------------------------------------------------------------- | :-------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Automatizace domů a budov (HVAC, Smart Home) - VZOR**   | **Kompaktní PLC na DIN lištu s integrovanou instalační sběrnicí** | **Tecomat Foxtrot 2** (např. centrální jednotka CP-2007 nebo CP-2000) | Dvě dvoudrátové sběrnice CIB (Common Installation Bus) s napájením prvků po sběrnici, LAN Ethernet, webserver, nízká spotřeba, relé 230 V / 16 A |
-| **Automatizace jednoúčelových strojů a linek**            | `...`                                                             | `...` *(např. Tecomat TC800)*                                         | `...`                                                                                                                                            |
-| **Rozsáhlé procesní řízení a velké energetické celky**    | `...`                                                             | `...`                                                                 | `...`                                                                                                                                            |
-| **Strojní zařízení s vestavěnou elektronikou (Embedded)** | `...`                                                             | `...` *(např. OEM deskové jednotky Teco řady Foxtrot)*                | `...`                                                                                                                                            |
+| **Automatizace jednoúčelových strojů a linky**            | Modulární PLC na DIN lištu                                        | **Tecomat TC800 / Foxtrot 2** (např. TC800 / CP-1016)                 | Modulární provedení, rychlá sběrnice TCL2, Ethernet, robustní I/O, napájení 24 V DC, krytí IP20                                                    |
+| **Rozsáhlé procesní řízení a velké energetické celky**    | Distribuované modulární PLC / DCS systémy                         | **Tecomat TC800** / rozsáhlé systémy Siemens S7-1500                  | Redundance, velký počet I/O, optické sběrnice, průmyslový Ethernet, robustní modulární rack, vysoká spolehlivost                            |
+| **Strojní zařízení s vestavěnou elektronikou (Embedded)** | Embedded PLC / OEM deskové jednotky                               | **OEM deskové jednotky Teco řady Foxtrot** (bez vnější krabičky)      | Kompaktní rozměry bez krytu pro přímou montáž do zařízení (např. tepelná čerpadla), specifický pinout I/O, sběrnice SPI/I2C/CAN |
 
 2. **PLC vs. Embedded PLC a další řídicí jednotky:**
    - Jaký je zásadní rozdíl mezi standardním průmyslovým PLC v krabičce na DIN lištu a tzv. **Embedded PLC**? Co obecně vyjadřuje pojem *embedded* a v jakých dalších typech zařízení se s ním setkáváme?
-     - *Vaše vysvětlení:* `...`
+     - *Vaše vysvětlení:* Standardní průmyslové PLC je uloženo v odolném plastovém pouzdře s krytím IP20 určeném pro montáž na DIN lištu do rozváděče, obsahuje integrované svorkovnice, galvanické oddělení a průmyslové ochrany. **Embedded PLC** (nebo OEM verze) je naproti tomu realizováno jako holá deska plošných spojů (PCB) bez vnější krabičky, určená k přímé vestavbě dovnitř ovládaného zařízení (např. klimatizace, kotle, kompresoru). Pojem *embedded* (zabudovaný/vestavěný) obecně vyjadřuje jednoúčelový počítačový systém integrovaný uvnitř většího technického celku. S embedded systémy se běžně setkáváme v pračkách, automobilech (řídicí jednotky motoru, ABS), chytrých hodinkách, lékařských přístrojích nebo IoT senzorech.
 
    - Doplňte do přehledové tabulky význam zkratek a oblast jejich nasazení:
 
 | Zkratka      | Co zkratka znamená (anglicky / česky) | Pro jakou oblast řízení se primárně využívá                        | Typický operační / řídicí systém                 |
 | :----------- | :------------------------------------ | :----------------------------------------------------------------- | :----------------------------------------------- |
 | **iPC**      | Industrial PC / Průmyslové PC         | Vizualizace SCADA, řízení rozsáhlých technologických uzlů, SoftPLC | Průmyslový OS (Windows IoT Enterprise, Linux RT) |
-| **NC / CNC** | `...`                                 | `...`                                                              | `...`                                            |
-| **MCU**      | `...`                                 | `...`                                                              | `...` *(bare-metal bez OS nebo RTOS)*            |
-| **SoC**      | System on a chip                      | `...`                                                              | `...`                                            |
+| **NC / CNC** | Numerical Control / Číselné řízení    | Víceosé řízení obráběcích strojů (frézy, soustruhy, řezací lasery) | Real-time OS (RTOS, např. LinuxCNC, VxWorks)     |
+| **MCU**      | Microcontroller Unit / Mikrokontrolér | Jednoúčelová spotřební elektronika, senzory, aktuátory, IoT        | Bare-metal bez OS nebo RTOS (FreeRTOS)           |
+| **SoC**      | System on a chip / Systém na čipu     | Mobilní telefony, minipočítače (Raspberry Pi), set-top boxy, IoT   | Linux, Android, RTOS                             |
 
 > :key: **Vysvětlení pojmů a odborné zdroje:**
 > - **PLC (Programmable Logic Controller):** Průmyslový mikropočítačový systém určený pro deterministické řízení technologických procesů v reálném čase. Vyznačuje se vysokou odolností proti rušení, modulární koncepcí a cyklickým vykonáváním programu.
@@ -68,7 +68,7 @@ Programovatelné automaty (PLC)
 Proč programátor v prostředí pro PLC (např. Teco Mosaic) nesmí ve standardní programové smyčce použít nekonečný blokující cyklus (nekonečná smyčka/infinite loop, např. `WHILE True DO ...`), se kterým se lze setkat u programování desktopových aplikací na PC a programování MCU? Jaký interní bezpečnostní mechanismus procesoru PLC by v takovém případě zasáhl?
 
 *Vaše odpověď:*
-`...`
+Nekonečný blokující cyklus by zcela zablokoval hlavní prováděcí vlákno PLC, čímž by znemožnil dokončení cyklu (aktualizaci procesního obrazu, obsluhu komunikace a čtení/zápis I/O). V takovém případě by okamžitě zasáhl interní bezpečnostní mechanismus zvaný **Watchdog (časový strážce)** – hardwarový/softwarový časovač, který hlídá maximální povolenou dobu trvání jednoho PLC cyklu (např. 100–500 ms). Pokud cyklus tento limit překročí, Watchdog vyvolá okamžité přerušení, přepne PLC do stavu STOP / Fault, odpojí silové výstupy do bezpečné polohy a zapíše kritickou chybu do systémového logu.
 
 ---
 
@@ -83,14 +83,14 @@ Prostudujte vnitřní blokové uspořádání programovatelného automatu na ní
 1. **Vnitřní uspořádání a paměťové oblasti PLC:**
    - Podle výše uvedeného blokového schématu a technické dokumentace PLC Teco doplňte funkci jednotlivých paměťových bloků v procesorové jednotce:
      - **Flash paměť (uživatelský program):** 
-       - Je volatilní (energeticky závislá)? `[Ano / Ne]`
-       - Co přesně se do ní nahrává z prostředí Mosaic: `...`
+       - Je volatilní (energeticky závislá)? `[Ne]`
+       - Co přesně se do ní nahrává z prostředí Mosaic: Uživatelský zkompilovaný program (binární kód) a systémový firmware.
      - **Datová paměť RAM:** 
-       - Je volatilní? `[Ano / Ne]`
-       - K čemu slouží během cyklu PLC: `...`
+       - Je volatilní? `[Ano]`
+       - K čemu slouží během cyklu PLC: Dočasné uložení proměnných, mezivýpočtů, zásobníků a procesního obrazu (PII/PIQ) za provozu.
      - **Remanentní paměť (Retain / zálohovaná RAM):** 
-       - Jakým způsobem je zálohována při výpadku napájení v modulech Tecomat Foxtrot (akumulátor / superkondenzátor / paměť FRAM): `...`
-       - Uveďte typický příklad proměnné, která musí být uložena v remanentní paměti: `...`
+       - Jakým způsobem je zálohována při výpadku napájení v modulech Tecomat Foxtrot (akumulátor / superkondenzátor / paměť FRAM): Pomocí superkondenzátoru (supercap) a/nebo paměti typu FRAM / zálohované RAM, která uchová data i při dlouhodobém výpadku napájení bez nutnosti baterie.
+       - Uveďte typický příklad proměnné, která musí být uložena v remanentní paměti: Počitadlo motohodin čerpadla, nastavené parametry receptur, kumulativní průtok, stavy alarmů vyžadující ruční potvrzení.
 
 2. **Cyklický princip činnosti PLC a procesní obraz:**
 	
@@ -99,35 +99,35 @@ Prostudujte vnitřní blokové uspořádání programovatelného automatu na ní
 	Obr. převzatý z: TECO A.S. *PROGRAMOVATELNÉ AUTOMATY TECOMAT FOXTROT 2*. Kolín: Teco a.s., 2026. Dostupné také z: https://wiki.tecomat.cz/
 	
    - Popište 3 základní fáze jednoho pracovního cyklu PLC (**Scan Cycle**):
-     - *Fáze 1 (Čtení vstupů):* `...` *(načtení stavu svorek do Procesního obrazu vstupů – PII)*
-     - *Fáze 2 (Vykonání programu):* `...` *(výpočet logických a matematických operací)*
-     - *Fáze 3 (Zápis výstupů):* `...` *(přenesení Procesního obrazu výstupů – PIQ na fyzické svorky)*
+     - *Fáze 1 (Čtení vstupů):* Načtení fyzických stavů ze vstupních svorek a jejich zápis do Procesního obrazu vstupů (PII).
+     - *Fáze 2 (Vykonání programu):* Výpočet logických a matematických operací uživatelského programu řádek po řádku na základě dat z PII a zápis výsledků do Procesního obrazu výstupů (PIQ).
+     - *Fáze 3 (Zápis výstupů):* Přenesení stavů z Procesního obrazu výstupů (PIQ) na fyzické výstupní svorky PLC.
    - Proč procesor PLC nečte fyzické svorky průběžně během výpočtu programu na každém řádku kódu, ale pracuje výhradně s procesním obrazem?
-     - *Vysvětlení:* `...`
+     - *Vysvětlení:* Zajišťuje to **časovou konzistenci dat** (frozen state) během celého výpočtu jednoho cyklu. Pokud by se vstup změnil uprostřed provádění rozsáhlého programu, mohlo by dojít k nekonzistentním logickým stavům a chybám v řízení.
 
 3. **Napájení, signály a elektrická odolnost:**
    - Jaké je jmenovité napájecí napětí centrálních jednotek a rozšiřujících modulů systému Tecomat Foxtrot?
      - Označte správné možnosti: 
-	     `[ ] DC`
-	     `[ ] AC`
-	     `[ ] 5 V`
-		 `[ ] 12 V`
-		 `[ ] 24 V`
-		 `[ ] 48 V` 
-		 `[ ] 230 V`
+	   `[ ] DC` -> (Pozor, správně je specificky stejnosměrné 24V DC, níže)
+	   `[ ] AC`
+	   `[ ] 5 V`
+	   `[ ] 12 V`
+	   `[x] 24 V`
+	   `[ ] 48 V` 
+	   `[ ] 230 V`
    - Jaký je princip fungování a hlavní výhoda **galvanického oddělení** vstupních obvodů (pomocí optočlenů) u průmyslového PLC?
-     - *Odpověď:* `...`
+     - *Odpověď:* Princip spočívá ve světelné vazbě (bez přímého elektrického/vodivého propojení) mezi vnějším obvodem senzoru a vnitřní elektronikou CPU. Hlavní výhodou je dokonalá ochrana citlivých obvodů PLC před nebezpečným přepětím, zemními smyčkami a elektromagnetickým rušením z průmyslového prostředí.
    - Proč musí být paralelně k cívce stejnosměrného elektromagnetického ventilu nebo stykače spínaného polovodičovým tranzistorovým výstupem PLC zapojena ochranná zhášecí dioda (tzv. flyback dioda/freewheeling diode)?
-     - *Vysvětlení:* `...`
+     - *Vysvětlení:* Indukční zátěž (cívka) při náhlém rozpojení obvodu generuje velké induktivní přepětí (dle zákona $U = -L \cdot di/dt$). Zhášecí dioda zapojená v závěrném směru paralelně k cívce poskytne bezpečný uzavřený oběh pro zánik nahromaděné magnetické energie a ochrání spínací tranzistor před zničením.
 
 4. **Komunikační rozhraní a systémové sběrnice Teco:**
    - Doplňte do tabulky parametry sběrnic používaných u systému Tecomat Foxtrot (využijte [wiki.tecomat.cz](https://wiki.tecomat.cz/)):
 
 | Název sběrnice                         | Typická fyzická vrstva / kabeláž                        | K čemu sběrnice slouží                                | Maximální dosah / zakončení (terminace)                      |
 | :------------------------------------- | :------------------------------------------------------ | :---------------------------------------------------- | :----------------------------------------------------------- |
-| **TCL2** *(Teco Communication Line 2)* | RS-485, stíněný kroucený pár (např. kabel SYKFY, PCEHY) | Připojení rychlých periferních modulů na DIN lištu    | Až stovek metrů; na obou koncích zakončovací odpor cca 120 Ω |
-| **CIB** *(Common Installation Bus)*    | `...`                                                   | `...`                                                 | `...`                                                        |
-| **Ethernet (ETH)**                     | 100Base-TX, konektor RJ45 (kabel UTP/STP Cat 5e/6)      | `...` *(programování Mosaic, Web server, Modbus TCP)* | Max. 100 m na segment                                        |
+| **TCL2** *(Teco Communication Line 2)* | RS-485, stíněný kroucený pár (např. kabel SYKFY, PCEHY) | Připojení rychlých periferních modulů na DIN lištu    | Až stovky metrů; na obou koncích zakončovací odpor cca 120 Ω |
+| **CIB** *(Common Installation Bus)*    | Dvouvodičová sběrnice (nestíněný kroucený pár)          | Obousměrná komunikace a napájení inteligentních prvků | Až 300–500 m (volná topologie: hvězda, strom, sběrnice)       |
+| **Ethernet (ETH)**                     | 100Base-TX, konektor RJ45 (kabel UTP/STP Cat 5e/6)      | Programování Mosaic, Web server, Modbus TCP, MQTT     | Max. 100 m na segment                                        |
 
 > :key: **Vysvětlení pojmů a odborné zdroje:**
 > - **Procesní obraz (Process Image):** Paměťová oblast v RAM kontroléru, která uchovává snímek stavu všech fyzických vstupů pořízený na počátku cyklu a připravený stav výstupů pro zápis na konci cyklu. Zajišťuje časovou konzistenci dat během zpracování algoritmu.
@@ -147,7 +147,7 @@ Prostudujte vnitřní blokové uspořádání programovatelného automatu na ní
 V jakých jednotkách udává norma **ČSN EN 60529** odolnost proti vniknutí pevných těles a kapalin (kód IP) a jaké minimální krytí musí mít centrální jednotka PLC určená pro montáž na DIN lištu do rozváděče (např. Tecomat Foxtrot v provedení IP20) ve srovnání s decentralizovaným senzorem na venkovním potrubí? Ověřte i správnost označení normy.
 
 *Vaše odpověď:*
-`...`
+Norma ČSN EN 60529 stanovuje stupeň krytí pomocí kódu **IP** (International Protection) následovaného dvěma číslicemi. První číslice (0–6) značí ochranu před dotykem a vniknutím pevných cizích těles, druhá číslice (0–8) ochranu před vodou. Centrální jednotka PLC v rozváděči má typicky krytí **IP20** (ochrana před dotykem prstem, bez ochrany proti vodě), protože je chráněna celkovým krytím rozváděče (např. IP54/IP65). Oproti tomu decentralizovaný senzor na venkovním potrubí musí mít minimálně krytí **IP65** nebo **IP67** (prachotěsnost a odolnost proti tryskající vodě / ponoření), protože je vystaven přímým vlivům počasí.
 
 ---
 
@@ -169,7 +169,7 @@ Jste v roli projektanta automatizačních systémů. Zákazník požaduje navrhn
 > *Příklad postupu návrhu sestavy Teco:*
 > 1. *Základní centrální jednotka:* Volba např. **CP-2007** (obsahuje 14 univerzálních vstupů konfigurovatelných jako DI nebo AI pro odporová čidla i proud 4–20 mA, 10 reléových výstupů a 2 analogové výstupy s funkcí PWM, vestavěný Ethernet a sběrnice TCL2 + CIB).
 > 2. *Rozšíření chybějících I/O po systémové sběrnici TCL2:* Přidání periferií z řady Foxtrot:
->    - Např. modul binárních vstupů **IB-1301** (12× DI 24 V DC) pro pokrytí zbývajících binárních vstupů.
+>    - Např. modul binárních vstupů **IB-1308** (16× DI 24 V DC) pro pokrytí zbývajících binárních vstupů.
 >    - Např. modul binárních výstupů **OS-1401** (12× polovodičový výstup 24 V DC) pro rychlé výstupy a PWM.
 > 3. *Kalkulace rezervy:* Přepočet celkových kapacit na požadavek technologie (minimální rezerva 15–20 %).
 
@@ -177,33 +177,33 @@ Jste v roli projektanta automatizačních systémů. Zákazník požaduje navrhn
 
 1. **Konfigurace komponent z katalogu Teco (vyplňte návrhovou tabulku):**
 
-| Pozice | Typ modulu / komponenta                     | Přesné typové označení Teco           | Objednací číslo (Part No.) | Pokryté vstupy a výstupy (DI / DO / AI / PWM / relé) |
+| Pozice | Typ modulu / komponenta                   | Přesné typové označení Teco           | Objednací číslo (Part No.) | Pokryté vstupy a výstupy (DI / DO / AI / PWM / relé) |
 | :----- | :------------------------------------------ | :------------------------------------ | :------------------------- | :--------------------------------------------------- |
-| **1**  | Spínaný napájecí zdroj 24 V DC na DIN lištu | `...` *(např. PS2-60/27)*             | `...`                      | Napájení centrály a senzorů 24 V DC                  |
-| **2**  | Centrální jednotka (CPU)                    | `...` *(např. CP-2007 nebo CP-2005)*  | `...`                      | `...`                                                |
-| **3**  | Rozšiřující modul 1 (sběrnice TCL2)         | `...` *(např. IB-1301)*               | `...`                      | `...`                                                |
-| **4**  | Rozšiřující modul 2 (sběrnice TCL2)         | `...` *(např. OS-1401)*               | `...`                      | `...`                                                |
-| **5**  | Případný další submodul / zakončení         | `...` *(např. zakončovací člen TCL2)* | `...`                      | `...`                                                |
+| **1**  | Spínaný napájecí zdroj 24 V DC na DIN lištu | Mean Well HDR-60-24 / Teco PS2-60/24  | PS2-60/24                  | Napájení centrály a senzorů 24 V DC                  |
+| **2**  | Centrální jednotka (CPU)                    | Tecomat Foxtrot 2 CP-2007             | TXV 134 07                 | 14× UI (DI/AI), 10× DO relé, 2× AO/PWM, Ethernet, CIB |
+| **3**  | Rozšiřující modul 1 (sběrnice TCL2)         | Modul binárních vstupů IB-1308        | TXV 137 08                 | 16× DI 24 V DC                                       |
+| **4**  | Rozšiřující modul 2 (sběrnice TCL2)         | Modul tranzistorových výstupů OS-1401 | TXV 138 01                 | 12× DO tranzistor 24 V DC (vč. podpory PWM)          |
+| **5**  | Zakončení sběrnice TCL2                     | Terminátor TCL2 (odporový člen 120 Ω) | TCL2-TERM                  | Zakončení komunikační linky RS-485                   |
 
 2. **Vyhodnocení I/O bilance a projektové rezervy:**
    - Doplňte počty a vypočítejte výslednou rezervu pro budoucí rozšíření linky:
 
 | Typ signálu | Požadavek linky | Celková kapacita navržené sestavy Teco | Rezerva (počet volných svorek) | Výsledná rezerva v % |
 | :--- | :--- | :--- | :--- | :--- |
-| **Digitální vstupy (DI)** | 23 | `...` | `...` | `... %` |
-| **Analogové vstupy (AI: 4–20mA, PT)**| 7 | `...` | `...` | `... %` |
-| **Tranzistorové výstupy (DO tranzistor + PWM)** | 6 (4 PWM + 2 DO)| `...` | `...` | `... %` |
-| **Reléové výstupy (DO relé 230 V)**| 3 | `...` | `...` | `... %` |
+| **Digitální vstupy (DI)** | 23 | 30 (14 UI + 16 DI z IB-1308) | 7 | 30,4 % |
+| **Analogové vstupy (AI: 4–20mA, PT)**| 7 | 14 (14 univerzálních vstupů UI na CP-2007) | 7 | 50,0 % |
+| **Tranzistorové výstupy (DO tranzistor + PWM)** | 6 (4 PWM + 2 DO)| 12 (modul OS-1401) | 6 | 100,0 % |
+| **Reléové výstupy (DO relé 230 V)**| 3 | 10 (reléové výstupy CP-2007) | 7 | 233,3 % |
 
 3. **Proudová bilance a dimenzování napájecího zdroje 24 V DC:**
    - Vypočtěte proudovou spotřebu sestavy na hladině 24 V DC:
-     - Vlastní příkon CPU a rozšiřujících modulů (dle datasheetů Teco): `...` W / 24 V = `...` A
-     - Odběr napájených snímačů DI (23 snímačů × cca 10 mA): `...` A
-     - Odběr zátěží na tranzistorových výstupech se soudobostí $k_s = 0{,}7$: `...` A
-     - **Celkový špičkový proud:** `...` A
+     - Vlastní příkon CPU a rozšiřujících modulů (dle datasheetů Teco): cca 10 W / 24 V = 0,42 A
+     - Odběr napájených snímačů DI (23 snímačů × cca 10 mA): 0,23 A
+     - Odběr zátěží na tranzistorových výstupech se soudobostí $k_s = 0{,}7$ (6 výstupů po max 0,5 A = 3 A × 0,7): 2,10 A
+     - **Celkový špičkový proud:** 2,75 A
      - Jaký napájecí zdroj 24 V DC z nabídky Teco / Mean Well zvolíte (včetně doporučené rezervy 25 %)?
-       - *Zvolený zdroj a jmenovitý proud:* `...`
-    - Navrhněte alternativu tohoto zdroje od jiného výrobce: `...`
+       - *Zvolený zdroj a jmenovitý proud:* Mean Well HDR-60-24 nebo Teco PS2-60/24 (24 V DC / 2,5 A až 5 A, popř. robustnější zdroj Mean Well NDR-120-24 / 5 A).
+     - Navrhněte alternativu tohoto zdroje od jiného výrobce: Siemens SITOP PSU100S 24V / 5A (obj. č. 6EP1333-2BA20).
 
 > **Kritéria hodnocení úlohy 3 (bodování na známky):**
 > - :bangbang: **Správnost technického výběru a kompatibilita systému Teco (40 %):** Všechny zvolené moduly existují v portfoliu Teco a.s., jsou vzájemně kompatibilní (sběrnice TCL2/CIB) a plně pokrývají zadané signály včetně specifických požadavků (odporové měření PT100/Pt1000, 4–20 mA a rychlé výstupy PWM).
@@ -227,7 +227,7 @@ Jste v roli projektanta automatizačních systémů. Zákazník požaduje navrhn
 Jaký je princip zapojení odporového snímače teploty (např. Pt1000) a proč je pro přesné měření na velké vzdálenosti vhodnější použít snímač Pt1000 než Pt100, pokud máme k dispozici pouze standardní 2vodičové vedení?
 
 *Vaše odpověď:*
-`...`
+Odporový snímač Pt100 má jmenovitý odpor 100 Ω při 0 °C (citlivost cca 0,385 Ω/°C), zatímco Pt1000 má 1000 Ω při 0 °C (citlivost cca 3,85 Ω/°C). U 2vodičového zapojení se k odporu samotného čidla přičítá i odpor přívodních vodičů, který závisí na délce a průřezu kabelu. U Pt100 tvoří odpor přívodního vedení (např. jednotky ohmů) významnou relativní chybu odpovídající chybě o několik stupňů Celsia. U Pt1000 je tentýž odpor přívodu desetinásobně méně významný vzhledem k celkové hodnotě odporu čidla, takže výsledná chyba měření teploty je mnohem nižší.
 
 ---
 
@@ -254,36 +254,36 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
 | Signalizační prvek na PLC | Stav (barva / svit)     | Provozní význam (co stav znamená pro servisního technika)   |
 | :------------------------ | :---------------------- | :---------------------------------------------------------- |
 | **RUN**                   | Zelená, trvale svítí    | Uživatelský program v PLC běží v normálním cyklickém režimu |
-| **HALT / STOP**           | Žlutá / oranžová, svítí | `...`                                                       |
-| **ERR / FAULT**           | Červená, bliká          | `...`                                                       |
-| **ERR / FAULT**           | Červená, trvale svítí   | `...`                                                       |
-| **ETH (Link/Act)**        | Zelená/žlutá, bliká     | `...`                                                       |
+| **HALT / STOP**           | Žlutá / oranžová, svítí | Uživatelský program je zastaven (režim ladění, po manuálním zastavení nebo čeká na spuštění) |
+| **ERR / FAULT**           | Červená, bliká          | Softwarová chyba, varovné hlášení nebo výstraha (např. chybějící periferie, varování v logu) |
+| **ERR / FAULT**           | Červená, trvale svítí   | Kritická systémová chyba hardwaru nebo fatální chyba firmware (vyžaduje servis/reflash) |
+| **ETH (Link/Act)**        | Zelená/žlutá, bliká     | Probíhá Ethernetová komunikace (aktivní síťový přenos dat / link OK) |
 
 2. **Troubleshooting v elektrickém zapojení pomocí digitálního multimetru:**
    - Upevněte na DIN lištu PLC a podle parametrů (viz technický list) vyberte vhodný zdroj napájení.
    - Zapojte napájení PLC (než zapojíte 230 V AC zapojení proměřte).
-   - Popište přesný a bezpečný metodický postup (kam připojíte měřicí hroty, jaký rozsah a veličinu na multimetru nastavíte; alespoň některé varianty bezpečně nasimulovat na PLC a zdroji, nejspíš budete potřebovat navázat komunikaci s programovacím prostředím, založit program a HW konfiguraci, abyste mohli ovládat výstupy a číst vstupy):
-     - **A. Detekce tvrdého zkratu mezi svorkami +24 V DC a 0 V (GND) před zapnutím jističe:**
-       - *Postup:* `...` *(pozor: zařízení musí být zcela bez napětí, měření impedance/kontinuity)*
+   - Popište přesný a bezpečný metodický postup (kam připojíte měřicí hroty, jaký rozsah a veličinu na multimetru nastavíte):
+     - **A. Detekce tvrdého zkratu mezi svorkami +24 V DC a 0 V (Gnd) před zapnutím jističe:**
+       - *Postup:* Zařízení musí být zcela bez napětí. Multimetr nastavit na měření odporu ($\Omega$) nebo akustické testování continuity (pípák). Hroty připojit mezi svorku +24 V DC a GND. Pokud multimetr pípá nebo ukazuje odpor blížící se 0 Ω, v obvodu je tvrdý zkrat.
      - **B. Ověření spečených kontaktů výstupního relé DO při vypnutém napájení řízení:**
-       - *Postup:* `...`
+       - *Postup:* Zařízení odpojeno od napájení. Multimetr nastavit na měření odporu ($\Omega$). Hroty přiložit na spínací kontakt (NO) a společný kontakt (COM) daného relé při neaktivním (rozepnutém) stavu. Nulový odpor (nebo pípnutí) signalizuje spečené kontakty.
      - **C. Diagnostika napájecího zdroje a napájení PLC (ověření správného napětí 24 V DC):**
-	   - *Postup:* `...` *(zařízení pod napětím, měření stejnosměrného napětí – hroty na svorkách zdroje / PLC napájení +24 V a 0 V, vhodný rozsah DC napětí, kontrola ripple/stability)*
-	- **D. Diagnostika vstupů a výstupů PLC (ověření napětí / kontinuity na DI/DO):**
-       - *Postup:* `...` *(podle typu – měření napětí na aktivovaném vstupu/výstupu nebo kontinuity/impedance při vypnutém napájení, hroty na příslušných svorkách I/O a referenční GND)*
-    - **E. Měření napětí 230 V AC pomocí DC rozsahu (!!! Tento úkol provádějte pouze s vyučujícím !!!):**
-	   - *Postup:* `...` *(zařízení pod napětím, multimetr nastaven na rozsah **1000 V DC**, hroty bezpečně připojeny na fázový a nulový vodič / L–N. Multimetr měří střední hodnotu, proto ukáže přibližně **0 V**.)*
-	   - *Jaké riziko z toho vyplývá při následné práci na zařízení:* `...`
+       - *Postup:* Zařízení pod napětím. Multimetr nastavit na měření stejnosměrného napětí (**DC V**, rozsah min. 50 V). Černý hrot na svorku 0 V (COM), červený na svorku +24 V DC. Naměřená hodnota musí stabilně dosahovat cca 24,0 až 24,5 V DC.
+     - **D. Diagnostika vstupů a výstupů PLC (ověření napětí / kontinuity na DI/DO):**
+       - *Postup:* Měření stejnosměrného napětí (DC V). Černý hrot na GND, červený na svorku digitálního vstupu DI. Při sepnutém snímači naměřeno cca 24 V DC (log. 1), při rozepnutém 0 V (log. 0). U výstupů DO ověřujeme přítomnost 24 V DC proti GND při aktivaci výstupu v programu.
+     - **E. Měření napětí 230 V AC pomocí DC rozsahu (!!! Tento úkol provádějte pouze s vyučujícím !!!):**
+       - *Postup:* Zařízení pod napětím, multimetr nastaven na rozsah **1000 V DC**, hroty bezpečně připojeny na fázový a nulový vodič / L–N. Multimetr měří střední hodnotu, proto ukáže přibližně **0 V** (kladná a záporná půlvlna střídavého napětí se navzájem vyruší).
+       - *Jaké riziko z toho vyplývá při následné práci na zařízení:* Technik může chybného údaje 0 V na displeji chybné funkce multimetru využít k domněnce, že obvod je bezpečný, a dotknout se živých částí pod napětím 230 V AC, což hrozí těžkým úrazem elektrickým proudem nebo smrtí.
 
 3. **Diagnostika v programovacím prostředí Teco Mosaic:**
    - K jakému diagnostickému účelu slouží níže uvedené nástroje prostředí Mosaic a jaká jsou jejich bezpečnostní rizika:
      - **Nástroj Watch / Sledování proměnných (Inspektor):**
-       - *Účel:* `...`
+       - *Účel:* Online sledování a monitorování aktuálních hodnot proměnných, stavů I/O, časovačů a interních registrů v reálném čase za běhu programu.
      - **Funkce Force (Vnucení hodnoty vstupu / výstupu):**
-       - *Co přesně funkce provede:* `...`
-       - :warning: **Provozní a bezpečnostní riziko funkce Force:** Proč je použití funkce Force během ostrého provozu s přítomností lidské obsluhy zakázáno? `...`
+       - *Co přesně funkce provede:* Natvrdo uzamkne hodnotu proměnné, vstupu či výstupu na zvolené úrovni (TRUE/FALSE) bez ohledu na reálný stav fyzické svorky nebo vykonávaný algoritmus.
+       - :warning: **Provozní a bezpečnostní riziko funkce Force:** Vnucování hodnot v ostrém provozu ignoruje bezpečnostní koncové spínače, blokování a stavy technologie, což může vést k nekontrolovanému spuštění pohonů, poškození stroje a vážnému ohrožení zdraví obsluhy.
      - **Systémový diagnostický log (Chybový protokol PLC v Mosaicu):**
-       - *Jaké informace v něm technik vyčte:* `...` *(např. restart CPU, výpadek sběrnice TCL2, chyba dělení nulou)*
+       - *Jaké informace v něm technik vyčte:* Detailní historii chyb, důvody restartu CPU (např. zásah Watchdogu, výpadek napájení), výpadky komunikace na sběrnicích TCL2/CIB, systémové výjimky a časová razítka událostí.
 
 > **Kritéria hodnocení úlohy 4 (bodování na známky):**
 > - :bangbang: **Odborná správnost interpretace stavů a hlášení PLC (30 %):** Bezchybné vysvětlení indikace LED (RUN, HALT, ERR) a práce s diagnostickým hlášením v prostředí Mosaic.
@@ -307,7 +307,7 @@ Jste v roli servisního inženýra na lince řízené automatem **Tecomat Foxtro
 Co se stane v řídicím systému Tecomat Foxtrot, pokud na sběrnici TCL2 omylem nastavíte dvěma různým periferním modulům stejnou hardwarovou adresu (např. otočným přepínačem adresy), a jak tuto kolizi indikuje centrální jednotka v diagnostice?
 
 *Vaše odpověď:*
-`...`
+Pokud mají dva moduly na sběrnici TCL2 nastavenou stejnou adresu, dochází ke komunikační kolizi (bus contention). Centrální jednotka nedokáže data od těchto modulů správně dekódovat, v diagnostickém logu a konfiguračním stromu prostředí Mosaic se objeví chybové hlášení komunikační chyby / ztráty spojení s daným uzlem a LED signalizace stavu sběrnice na centrále či modulech začne chybově blikat (červeně).
 
 ---
 
@@ -315,7 +315,7 @@ Co se stane v řídicím systému Tecomat Foxtrot, pokud na sběrnici TCL2 omyle
 
 *Časová dotace: 25–30 minut | :bangbang: Klasifikovaná inženýrská úloha na známky*
 
-Prostředí **Teco Mosaic** umožňuje úplnou softwarovou simulaci cyklického běhu PLC bez fyzického hardware. Simulátor zprostředkovává procesní obraz vstupů a výstupů, odpočítávání časovačů i sledování proměnných v reálném čase – stejně jako skutečný automat. Tato úloha vás provede celým pracovním tokem: od založení projektu přes napsání řídicího algoritmu až po jeho ověření v simulátoru.
+Prostředí **Teco Mosaic** umožňuje úplnou softwarovou simulaci cyklického běhu PLC bez fyzického hardware. Simulátor zprostředkovává procesní obraz vstupů a výstupů, odpočítávání časovačů i sledování proměnných v reálném trase – stejně jako skutečný automat. Tato úloha vás provede celým pracovním tokem: od založení projektu přes napsání řídicího algoritmu až po jeho ověření v simulátoru.
 
 #### Technologický scénář – čerpací stanice odpadních vod:
 
@@ -344,11 +344,11 @@ Naprogramujte a simulujte v prostředí Teco Mosaic řízení jednoduché **čer
 
    | Krok | Co v Mosaicu nastavit / zkontrolovat | Proč je tento krok nutný |
    | :--- | :--- | :--- |
-   | **1. Volba cílové platformy** | V HW konfiguraci zvolit centrální jednotku, např. `...` *(např. CP-2007)* | Simulátor musí znát počet a typy I/O svorek |
-   | **2. Aktivace simulátoru** | V menu `...` přepnout komunikaci z „Ethernet / přímé spojení" na `...` | Bez aktivace simulátoru by Mosaic hledal fyzické PLC na síti |
-   | **3. Přiřazení proměnných k I/O svorkám** | V záložce `...` přiřadit proměnnou `di_HladinaDolni` na svorku `...` | Propojuje proměnnou v programu s fyzickým (nebo simulovaným) vstupem |
-   | **4. Spuštění simulace** | Kliknout na tlačítko `...` nebo stisknout klávesovou zkratku `...` | Spustí cyklický běh programu v simulátoru (náhrada za fyzické PLC) |
-   | **5. Sledování proměnných** | Otevřít okno `...` a přidat proměnné `do_Cerpadlo`, `stav`, `timer_TOF` | Umožní sledovat aktuální hodnoty proměnných v každém cyklu |
+   | **1. Volba cílové platformy** | V HW konfiguraci zvolit centrální jednotku `CP-2007` | Simulátor musí znát strukturu a počet I/O svorek |
+   | **2. Aktivace simulátoru** | V menu komunikace přepnout režim z fyzického připojení na `Simulátor / Simulation` | Bez simulátoru by Mosaic marně hledal fyzické PLC na síti |
+   | **3. Přiřazení proměnných k I/O svorkám** | V záložce `Vazby I/O` přiřadit proměnné na odpovídající svorky | Propojuje logické proměnné v programu s fyzickými (či simulovanými) vstupy |
+   | **4. Spuštění simulace** | Kliknout na ikonu `Start simulace` nebo stisknout klávesu `F5` / menu `Online` | Spustí cyklický běh programu v interním simulátoru PLC |
+   | **5. Sledování proměnných** | Otevřít okno `Watch (Sledování)` a přidat proměnné `do_Cerpadlo`, `timer_TOF`, `b_HavarieDetekce` | Umožňuje online monitorování a interaktivní změnu hodnot v každém cyklu |
 
 2. **Implementace řídicího algoritmu v jazyce ST:**
 
@@ -357,44 +357,42 @@ Naprogramujte a simulujte v prostředí Teco Mosaic řízení jednoduché **čer
 ```pascal
 PROGRAM Prg_CerpStation
 VAR
-    di_HladinaDolni  : BOOL; // NC plovák – spodní hladina (log.1 = OK)
-    di_HladinaPump   : BOOL; // NO plovák – zapínací hladina
-    di_HladinaHavar  : BOOL; // NO plovák – havarijní přepad
-    di_Porucha       : BOOL; // NC termistor (log.1 = bez poruchy)
-    btn_Reset        : BOOL; // Ruční reset alarmu operátorem
-    do_Cerpadlo      : BOOL; // Výstup stykače čerpadla
-    do_Alarm         : BOOL; // Výstup majáku / sirény
+    di_HladinaDolni    : BOOL; // NC plovák – spodní hladina (log.1 = OK)
+    di_HladinaPump     : BOOL; // NO plovák – zapínací hladina
+    di_HladinaHavar    : BOOL; // NO plovák – havarijní přepad
+    di_Porucha         : BOOL; // NC termistor (log.1 = bez poruchy)
+    btn_Reset          : BOOL; // Ruční reset alarmu operátorem
+    do_Cerpadlo        : BOOL; // Výstup stykače čerpadla
+    do_Alarm           : BOOL; // Výstup majáku / sirény
 
-    b_HavarieDetekce : BOOL; // RETAIN – příznak havárie přepadu (přežije výpadek)
-    timer_TOF        : TOF;  // Zpoždění vypnutí čerpadla (10 s)
+    b_HavarieDetekce   : BOOL RETAIN; // RETAIN – příznak havárie přepadu (přežije výpadek)
+    b_StartPodminka    : BOOL; // Pomocná proměnná pro podmínku startu
+    timer_TOF          : TOF;  // Zpoždění vypnutí čerpadla (10 s)
 END_VAR
 
-// === Doplňte implementaci logiky níže ===
+// === Implementace logiky ===
 
 // 1. Reset havarijního příznaku operátorem:
-...
+IF btn_Reset THEN
+    b_HavarieDetekce := FALSE;
+END_IF;
 
 // 2. Detekce havarijního přepadu nebo poruchy motoru:
-...
+IF di_HladinaHavar OR NOT di_Porucha THEN
+    b_HavarieDetekce := TRUE;
+END_IF;
 
 // 3. Podmínka pro spuštění čerpadla (všechny podmínky splněny):
-...
+b_StartPodminka := di_HladinaDolni AND di_HladinaPump AND di_Porucha AND NOT b_HavarieDetekce;
 
 // 4. Řízení výstupu čerpadla přes časovač TOF (zpoždění vypnutí 10 s):
-timer_TOF(IN := ..., PT := T#10s);
-do_Cerpadlo := timer_TOF.Q AND ...;
+timer_TOF(IN := b_StartPodminka, PT := T#10s);
+do_Cerpadlo := timer_TOF.Q AND di_HladinaDolni AND di_Porucha AND NOT b_HavarieDetekce;
 
 // 5. Aktivace alarmu:
-do_Alarm := ...;
+do_Alarm := b_HavarieDetekce OR NOT di_Porucha;
 
 END_PROGRAM
-```
-
-   - *Váš doplněný kód v ST:*
-```pascal
-// Vložte váš kompletní program:
-...
-```
 
 3. **Ověření chování programu v simulátoru Mosaic (protokol o simulaci):**
 
