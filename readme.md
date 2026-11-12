@@ -215,8 +215,8 @@ Jste v roli projektanta automatizačních systémů. Zákazník požaduje navrhn
 > - **Soudobost zátěží ($k_s$):** Statistický koeficient (zpravidla 0,7 až 0,8), který zohledňuje, že v reálném provozu nikdy nesepnou všechny akční členy a ventily v tentýž okamžik na plný proudový výkon.
 >
 > *Bibliografické citace dle normy ČSN ISO 690:*
-> - TECO A.S. *Základní modul CP-2007: Technický list a popis svorek* [online]. Kolín: Teco a.s., 2024 [cit. 2026-09-20]. Dostupné z: https://wiki.tecomat.cz/index.php?title=CP-2007
-> - TECO A.S. *Periferní moduly systému Foxtrot na sběrnici TCL2* [online]. Kolín: Teco a.s., 2023 [cit. 2026-09-20]. Dostupné z: https://wiki.tecomat.cz/
+> - TECO A.S. *Základní modul CP-2007: Technický list a popis svorek* [online]. Kolín: Teco a.s., 2024 [cit. 2026-09-20]. Dostupné z: https://wiki.tecomat.cz/index.php/clanek/cp-2007
+> - TECO A.S. *Periferní moduly systému Foxtrot na sběrnici TCL2* [online]. Kolín: Teco a.s., 2023 [cit. 2026-09-20]. Dostupné z: https://wiki.tecomat.cz/clanek/331-instalace-sbernice-tcl2
 
 <details>
 <summary> :bulb: Tip k analogovým vstupům u Teco Foxtrot: </summary>
