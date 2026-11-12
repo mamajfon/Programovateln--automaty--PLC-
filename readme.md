@@ -315,7 +315,7 @@ Pokud mají dva moduly na sběrnici TCL2 nastavenou stejnou adresu, dochází ke
 
 *Časová dotace: 25–30 minut | :bangbang: Klasifikovaná inženýrská úloha na známky*
 
-Prostředí **Teco Mosaic** umožňuje úplnou softwarovou simulaci cyklického běhu PLC bez fyzického hardware. Simulátor zprostředkovává procesní obraz vstupů a výstupů, odpočítávání časovačů i sledování proměnných v reálném trase – stejně jako skutečný automat. Tato úloha vás provede celým pracovním tokem: od založení projektu přes napsání řídicího algoritmu až po jeho ověření v simulátoru.
+Prostředí **Teco Mosaic** umožňuje úplnou softwarovou simulaci cyklického běhu PLC bez fyzického hardware. Simulátor zprostředkovává procesní obraz vstupů a výstupů, odpočítávání časovačů i sledování proměnných v reálném čase – stejně jako skutečný automat. Tato úloha vás provede celým pracovním tokem: od založení projektu přes napsání řídicího algoritmu až po jeho ověření v simulátoru.
 
 #### Technologický scénář – čerpací stanice odpadních vod:
 
@@ -340,37 +340,36 @@ Naprogramujte a simulujte v prostředí Teco Mosaic řízení jednoduché **čer
 
 1. **Postup při zakládání projektu a HW konfigurace v Mosaicu (doplňte kroky):**
 
-   Popište, co musíte nastavit v prostředí Teco Mosaic, abyste mohli spustit simulaci, aniž byste měli připojený fyzický PLC:
+    Popište, co musíte nastavit v prostředí Teco Mosaic, abyste mohli spustit simulaci, aniž byste měli připojený fyzický PLC:
 
-   | Krok | Co v Mosaicu nastavit / zkontrolovat | Proč je tento krok nutný |
-   | :--- | :--- | :--- |
-   | **1. Volba cílové platformy** | V HW konfiguraci zvolit centrální jednotku `CP-2007` | Simulátor musí znát strukturu a počet I/O svorek |
-   | **2. Aktivace simulátoru** | V menu komunikace přepnout režim z fyzického připojení na `Simulátor / Simulation` | Bez simulátoru by Mosaic marně hledal fyzické PLC na síti |
-   | **3. Přiřazení proměnných k I/O svorkám** | V záložce `Vazby I/O` přiřadit proměnné na odpovídající svorky | Propojuje logické proměnné v programu s fyzickými (či simulovanými) vstupy |
-   | **4. Spuštění simulace** | Kliknout na ikonu `Start simulace` nebo stisknout klávesu `F5` / menu `Online` | Spustí cyklický běh programu v interním simulátoru PLC |
-   | **5. Sledování proměnných** | Otevřít okno `Watch (Sledování)` a přidat proměnné `do_Cerpadlo`, `timer_TOF`, `b_HavarieDetekce` | Umožňuje online monitorování a interaktivní změnu hodnot v každém cyklu |
+    | Krok | Co v Mosaicu nastavit / zkontrolovat | Proč je tento krok nutný |
+    | :--- | :--- | :--- |
+    | **1. Volba cílové platformy** | V HW konfiguraci zvolit centrální jednotku, např. `Foxtrot CP-2007` | Simulátor musí znát počet a typy I/O svorek |
+    | **2. Aktivace simulátoru** | V menu `Projekt -> Manažer projektu` přepnout komunikaci z „Ethernet / přímé spojení" na `Simulovaný PLC` | Bez aktivace simulátoru by Mosaic hledal fyzické PLC na síti |
+    | **3. Přiřazení proměnných k I/O svorkám** | V záložce `HW konfigurace` přiřadit proměnnou `di_HladinaDolni` na svorku `DI1` | Propojuje proměnnou v programu s fyzickým (nebo simulovaným) vstupem |
+    | **4. Spuštění simulace** | Kliknout na tlačítko `Přeložit a Run` nebo stisknout klávesovou zkratku `Ctrl+F9` | Spustí cyklický běh programu v simulátoru (náhrada za fyzické PLC) |
+    | **5. Sledování proměnných** | Otevřít okno `Data` a přidat proměnné `do_Cerpadlo`, `stav`, `timer_TOF` | Umožní sledovat aktuální hodnoty proměných v každém cyklu |
 
 2. **Implementace řídicího algoritmu v jazyce ST:**
 
-   Napište program pro výše popsanou logiku čerpací stanice. Použijte strukturu s remanentní proměnnou a časovačem `TOF`. Vzorová kostra programu:
+    Napište program pro výše popsanou logiku čerpací stanice. Použijte strukturu s remanentní proměnnou a časovačem `TOF`. Vzorová kostra programu:
 
 ```pascal
 PROGRAM Prg_CerpStation
 VAR
-    di_HladinaDolni    : BOOL; // NC plovák – spodní hladina (log.1 = OK)
-    di_HladinaPump     : BOOL; // NO plovák – zapínací hladina
-    di_HladinaHavar    : BOOL; // NO plovák – havarijní přepad
-    di_Porucha         : BOOL; // NC termistor (log.1 = bez poruchy)
-    btn_Reset          : BOOL; // Ruční reset alarmu operátorem
-    do_Cerpadlo        : BOOL; // Výstup stykače čerpadla
-    do_Alarm           : BOOL; // Výstup majáku / sirény
+    di_HladinaDolni  : BOOL; // NC plovák – spodní hladina (log.1 = OK)
+    di_HladinaPump   : BOOL; // NO plovák – zapínací hladina
+    di_HladinaHavar  : BOOL; // NO plovák – havarijní přepad
+    di_Porucha       : BOOL; // NC termistor (log.1 = bez poruchy)
+    btn_Reset        : BOOL; // Ruční reset alarmu operátorem
+    do_Cerpadlo      : BOOL; // Výstup stykače čerpadla
+    do_Alarm         : BOOL; // Výstup majáku / sirény
 
-    b_HavarieDetekce   : BOOL RETAIN; // RETAIN – příznak havárie přepadu (přežije výpadek)
-    b_StartPodminka    : BOOL; // Pomocná proměnná pro podmínku startu
-    timer_TOF          : TOF;  // Zpoždění vypnutí čerpadla (10 s)
+    b_HavarieDetekce : BOOL; // RETAIN – příznak havárie přepadu (přežije výpadek)
+    timer_TOF        : TOF;  // Zpoždění vypnutí čerpadla (10 s)
 END_VAR
 
-// === Implementace logiky ===
+// === Doplňte implementaci logiky níže ===
 
 // 1. Reset havarijního příznaku operátorem:
 IF btn_Reset THEN
@@ -378,43 +377,80 @@ IF btn_Reset THEN
 END_IF;
 
 // 2. Detekce havarijního přepadu nebo poruchy motoru:
-IF di_HladinaHavar OR NOT di_Porucha THEN
+IF di_HladinaHavar THEN
     b_HavarieDetekce := TRUE;
 END_IF;
 
 // 3. Podmínka pro spuštění čerpadla (všechny podmínky splněny):
-b_StartPodminka := di_HladinaDolni AND di_HladinaPump AND di_Porucha AND NOT b_HavarieDetekce;
+// (Zajištěno přímo ve vazbě na vstup časovače TOF)
 
 // 4. Řízení výstupu čerpadla přes časovač TOF (zpoždění vypnutí 10 s):
-timer_TOF(IN := b_StartPodminka, PT := T#10s);
+timer_TOF(IN := di_HladinaPump AND di_HladinaDolni AND di_Porucha AND NOT b_HavarieDetekce, PT := T#10s);
+do_Cerpadlo := timer_TOF.Q AND di_HladinaDolni AND di_Porucha;
+
+// 5. Aktivace alarmu:
+do_Alarm := di_HladinaHavar OR NOT di_Porucha OR b_HavarieDetekce;
+
+END_PROGRAM
+```
+
+    - *Váš doplněný kód v ST:*
+```pascal
+PROGRAM Prg_CerpStation
+VAR
+    di_HladinaDolni  : BOOL; // NC plovák – spodní hladina (log.1 = OK)
+    di_HladinaPump   : BOOL; // NO plovák – zapínací hladina
+    di_HladinaHavar  : BOOL; // NO plovák – havarijní přepad
+    di_Porucha       : BOOL; // NC termistor (log.1 = bez poruchy)
+    btn_Reset        : BOOL; // Ruční reset alarmu operátorem
+    do_Cerpadlo      : BOOL; // Výstup stykače čerpadla
+    do_Alarm         : BOOL; // Výstup majáku / sirény
+
+    b_HavarieDetekce : BOOL RETAIN; // RETAIN – příznak havárie přepadu (přežije výpadek)
+    timer_TOF        : TOF;         // Zpoždění vypnutí čerpadla (10 s)
+END_VAR
+
+// 1. Reset havarijního příznaku operátorem:
+IF btn_Reset AND NOT di_HladinaHavar THEN
+    b_HavarieDetekce := FALSE;
+END_IF;
+
+// 2. Detekce havarijního přepadu:
+IF di_HladinaHavar THEN
+    b_HavarieDetekce := TRUE;
+END_IF;
+
+// 3. & 4. Řízení výstupu čerpadla přes časovač TOF (zpoždění vypnutí 10 s):
+timer_TOF(IN := di_HladinaPump AND di_HladinaDolni AND di_Porucha AND NOT b_HavarieDetekce, PT := T#10s);
 do_Cerpadlo := timer_TOF.Q AND di_HladinaDolni AND di_Porucha AND NOT b_HavarieDetekce;
 
 // 5. Aktivace alarmu:
-do_Alarm := b_HavarieDetekce OR NOT di_Porucha;
+do_Alarm := di_HladinaHavar OR NOT di_Porucha OR b_HavarieDetekce;
 
 END_PROGRAM
+```
 
 3. **Ověření chování programu v simulátoru Mosaic (protokol o simulaci):**
 
-   Po spuštění simulace v Mosaicu ověřte chování programu. Popište nebo doplňte očekávané hodnoty proměnných v okně **Watch** pro každý testovací scénář:
+    Po spuštění simulace v Mosaicu ověřte chování programu. Popište nebo doplňte očekávané hodnoty proměnných v okně **Watch** pro každý testovací scénář:
 
-   | Testovací scénář | Vstupní podmínky (hodnoty v simulátoru) | Očekávaný stav výstupů | Skutečně naměřeno v simulátoru |
-   | :--- | :--- | :--- | :--- |
-   | **Normální jímání – hladina roste** | `di_HladinaDolni=1`, `di_HladinaPump=0`, `di_Porucha=1`, `di_HladinaHavar=0` | `do_Cerpadlo=0`, `do_Alarm=0` | `...` |
-   | **Spuštění čerpadla** | `di_HladinaDolni=1`, `di_HladinaPump=1`, `di_Porucha=1`, `di_HladinaHavar=0` | `do_Cerpadlo=1`, `do_Alarm=0` | `...` |
-   | **Vyprázdnění – čekání TOF** | `di_HladinaDolni=1`, `di_HladinaPump=0 (právě klesl)`, vše ostatní OK | `do_Cerpadlo=1` *(ještě běží 10 s TOF)*, `timer_TOF.ET` roste | `...` |
-   | **Havarijní přepad** | `di_HladinaDolni=1`, `di_HladinaPump=1`, `di_HladinaHavar=1`, `di_Porucha=1` | `do_Alarm=1`, `b_HavarieDetekce=1` | `...` |
-   | **Porucha motoru (termistorové relé)** | `di_HladinaPump=1`, **`di_Porucha=0`** | `do_Cerpadlo=0`, `do_Alarm=1` | `...` |
-   | **Reset alarmu** | Po stisku `btn_Reset`, porucha i přepad odstraněny | `do_Alarm=0`, `b_HavarieDetekce=0` | `...` |
+    | Testovací scénář | Vstupní podmínky (hodnoty v simulátoru) | Očekávaný stav výstupů | Skutečně naměřeno v simulátoru |
+    | :--- | :--- | :--- | :--- |
+    | **Normální jímání – hladina roste** | `di_HladinaDolni=1`, `di_HladinaPump=0`, `di_Porucha=1`, `di_HladinaHavar=0` | `do_Cerpadlo=0`, `do_Alarm=0` | `do_Cerpadlo=0`, `do_Alarm=0` |
+    | **Spuštění čerpadla** | `di_HladinaDolni=1`, `di_HladinaPump=1`, `di_Porucha=1`, `di_HladinaHavar=0` | `do_Cerpadlo=1`, `do_Alarm=0` | `do_Cerpadlo=1`, `do_Alarm=0` |
+    | **Vyprázdnění – čekání TOF** | `di_HladinaDolni=1`, `di_HladinaPump=0 (právě klesl)`, vše ostatní OK | `do_Cerpadlo=1` *(ještě běží 10 s TOF)*, `timer_TOF.ET` roste | `do_Cerpadlo=1`, `timer_TOF.ET` roste od 0 do 10s |
+    | **Havarijní přepad** | `di_HladinaDolni=1`, `di_HladinaPump=1`, `di_HladinaHavar=1`, `di_Porucha=1` | `do_Alarm=1`, `b_HavarieDetekce=1` | `do_Alarm=1`, `b_HavarieDetekce=1` |
+    | **Porucha motoru (termistorové relé)** | `di_HladinaPump=1`, **`di_Porucha=0`** | `do_Cerpadlo=0`, `do_Alarm=1` | `do_Cerpadlo=0`, `do_Alarm=1` |
+    | **Reset alarmu** | Po stisku `btn_Reset`, porucha i přepad odstraněny | `do_Alarm=0`, `b_HavarieDetekce=0` | `do_Alarm=0`, `b_HavarieDetekce=0` |
 
 4. **Propojení teorie s výsledky simulace:**
-   - Proč proměnná `b_HavarieDetekce` musí být deklarována jako `RETAIN`? Co by se stalo při výpadku napájení PLC, kdyby nebyla uložena v remanentní paměti?
-     - *Vaše odpověď:* `...`
-   - Sledujte v okně Watch hodnotu `timer_TOF.ET` (elapsed time) během odpočtu 10 sekund. K čemu slouží tato hodnota z pohledu diagnostiky v praxi?
-     - *Vaše odpověď:* `...`
-   - Jakým způsobem byste pomocí funkce **Force** v Mosaicu nasimulovali výpadek ochrany motoru (`di_Porucha = FALSE`) bez fyzického přepojení svorky? Popište postup a uveďte bezpečnostní riziko:
-     - *Postup Force:* `...`
-     - *Bezpečnostní riziko při použití Force v ostrém provozu:* `...`
+    - Proč proměnná `b_HavarieDetekce` musí být deklarována jako `RETAIN`? Co by se stalo při výpadku napájení PLC, kdyby nebyla uložena v remanentní paměti?
+      - *Vaše odpověď:* `Proměnná typu RETAIN se ukládá do energeticky nezávislé / zálohované paměti (např. FRAM). Kdyby v ní nebyla, při výpadku a následném obnovení napájení PLC by se ztratila (vynulovala na FALSE). Operátor by tak nezjistil, že došlo k havarijnímu přepadu, a čerpadlo by mohlo nekontrolovaně pokračovat v provozu bez vyřešení příčiny.`
+    - Sledujte v okně Watch hodnotu `timer_TOF.ET` (elapsed time) během odpočtu 10 sekund. K čemu slouží tato hodnota z pohledu diagnostiky v praxi?
+      - *Vaše odpověď:* `Zobrazuje reálně uplynulý čas (od 0 s do 10 s) od okamžiku rozepnutí vstupní podmínky časovače. V praxi slouží technikovi či obsluze k ověření, že časovač správně odpočítává, nezasekl se a za kolik sekund dojde k vypnutí čerpadla.`
+    - Jakým způsobem byste pomocí funkce **Force** v Mosaicu nasimulovali výpadek ochrany motoru (`di_Porucha = FALSE`) bez fyzického přepojení svorky? Popište postup a uveďte bezpečnostní riziko:
+      - *Postup Force:* `V okně Data (Watch) nebo v HW konfiguraci kliknout pravým tlačítkem myši na proměnnou di_Porucha, vybrat volbu Force (Vnucení hodnoty) a nastavit ji natvrdo na log. 0 (FALSE).`
+      - *Bezpečnostní riziko při použití Force v ostrém provozu:* `Funkce Force přepisuje skutečný stav fyzického vstupu ze svorkovnice. Pokud ji technik po otestování zapomene odblokovat (zrušit vnucení), program bude ignorovat reálné čidlo i ochranu motoru, což může v ostrém provozu vést ke zničení stroje, požáru nebo úrazu obsluhy.`
 
 > **Kritéria hodnocení úlohy 5 (bodování na známky):**
 > - :bangbang: **Správný postup práce v simulátoru Mosaic (25 %):** Správně popsané kroky pro aktivaci simulátoru, přiřazení I/O a spuštění online monitoringu (Watch).
@@ -424,7 +460,7 @@ END_PROGRAM
 > :key: **Vysvětlení pojmů a odborné zdroje:**
 > - **Simulátor Teco Mosaic:** Integrovaný software Mosaicu, který plně emuluje cyklický běh procesorové jednotky Foxtrot včetně odpočtu časovačů, práce s procesním obrazem a remanentní pamětí – bez nutnosti připojení fyzického PLC. Student tak může odladit celý program ještě před nasazením na skutečné zařízení.
 > - **TOF (Timer Off-Delay / Časovač se zpožděním vypnutí):** Standardní funkční blok dle IEC 61131-3. Výstup `Q` je aktivní po celou dobu aktivního vstupu `IN`. Po deaktivaci `IN` zůstane `Q` aktivní ještě po dobu nastavenou v `PT`. Použití: zabránění krátkodobým cyklickým startům motorů (ochrana před taktováním čerpadla).
-> - **RETAIN (Remanentní proměnná):** Proměnná uložená v části paměti PLC (FRAM, zálohovaná RAM nebo superkondenzátorem), jejíž hodnota přežije výpadek napájení a je dostupná ihned po opětovném startu automatu. Typické použití: počítadla kusů, příznaky havárie, nastaveníparametrů procesu.
+> - **RETAIN (Remanentní proměnná):** Proměnná uložená v části paměti PLC (FRAM, zálohovaná RAM nebo superkondenzátorem), jejíž hodnota přežije výpadek napájení a je dostupná ihned po opětovném startu automatu. Typické použití: počítadla kusů, příznaky havárie, nastavení parametrů procesu.
 > - **Watch / Inspektor v Mosaicu:** Okno online monitoringu proměnných. Zobrazuje aktuální hodnotu libovolné proměnné programu v každém skenu PLC. Neovlivňuje chod programu – slouží pouze ke čtení.
 > - **Force (Vnucení hodnoty):** Diagnostický nástroj, který natvrdo uzamkne hodnotu proměnné v procesním obrazu na zvolenou hodnotu, nezávisle na fyzickém stavu svorky ani na algoritmu programu. V simulátoru bezpečně nahrazuje fyzické přepojení vstupní svorky.
 >
@@ -440,7 +476,7 @@ END_PROGRAM
 Proč se u fyzického tlačítka nouzového zastavení (E-Stop) v zapojení do vstupu PLC striktně vyžaduje rozpínací kontakt (NC), a jak se tato hardwarová skutečnost projeví v zápisu podmínky v jazyce ST (`IF NOT btn_Stop` vs. `IF btn_Stop`)? Co by se stalo při přetržení kabelu, kdyby bylo použito spínací tlačítko (NO)?
 
 *Vaše odpověď:*
-`...`
+`Rozpínací kontakt (NC) splňuje princip tzv. klidového proudu (fail-safe). Za běžného provozu prochází obvodem signál (log. 1). Při stisku E-Stopu, ale i při přetržení vodiče, uvolnění svorky nebo výpadku napájení signál zmizí (log. 0) a řídicí systém okamžitě vyhodnotí poruchu / nouzové zastavení. V jazyce ST se proto podmínka aktivace nouzového stavu zapisuje s negací: IF NOT btn_Stop THEN. Kdyby bylo použito spínací tlačítko (NO), přetržení kabelu by systém nepoznal (na vstupu by byla stále log. 0 jako v klidu) a v případě nouze by stisk tlačítka stroj nezastavil.`
 
 ---
 
@@ -457,21 +493,21 @@ Představte si, že management výrobní firmy zvažuje dvě alternativy řízen
 #### Váš úkol:
 
 1. **Kalkulace a multikriteriální srovnání TCO v horizontu 15 let:**
-   - Doplňte do tabulky analýzu rizik a provozních nákladů (OPEX):
+    - Doplňte do tabulky analýzu rizik a provozních nákladů (OPEX):
 
 | Kritérium hodnocení                                       | Varianta 1 (Custom deska s MCU)                                  | Varianta 2 (Průmyslové PLC Tecomat Foxtrot 2)                    |
 | :-------------------------------------------------------- | :--------------------------------------------------------------- | :--------------------------------------------------------------- |
-| **Dlouhodobá dostupnost náhradních dílů po 10–15 letech** | `...` *(riziko ukončení výroby čipu, nutnost nového návrhu PCB)* | Dlouholetá garance zpětné kompatibility firmy Teco (desítky let) |
-| **Servisovatelnost podnikovým elektroudržbářem**          | `...`                                                            | Běžná diagnostika přes webserver a IDE Mosaic dle normy IEC      |
-| **Doba odstávky linky při poruše řídicí jednotky**        | `...`                                                            | Výměna kusu na DIN lištu + nahrání programu ze záložní SD karty  |
-| **Certifikace a elektromagnetická kompatibilita (EMC)**   | `...` *(hrozí rušení od stykačů, riziko neprojití revizí)*       | Plná certifikace CE dle průmyslových norem                       |
-| **Závěrečné inženýrské doporučení pro vedení podniku**    | `...`                                                            | `...`                                                            |
+| **Dlouhodobá dostupnost náhradních dílů po 10–15 letech** | Velmi nízká (riziko ukončení výroby čipu, nutnost nového návrhu PCB) | Dlouholetá garance zpětné kompatibility firmy Teco (desítky let) |
+| **Servisovatelnost podnikovým elektroudržbářem**          | Prakticky nemožná (chybí dokumentace a zdrojový kód v C++)       | Běžná diagnostika přes webserver a IDE Mosaic dle normy IEC      |
+| **Doba odstávky linky při poruše řídicí jednotky**          | Dny až týdny (vývoj náhrady, ruční výroba a pájení desky)        | Výměna kusu na DIN lištu + nahrání programu ze záložní SD karty  |
+| **Certifikace a elektromagnetická kompatibilita (EMC)**   | Žádná (hrozí rušení od stykačů, riziko neprojití revizí)         | Plná certifikace CE dle průmyslových norem                       |
+| **Závěrečné inženýrské doporučení pro vedení podniku**    | Nevhodné pro průmysl – extrémní riziko drahých odstávek a závislosti na jedné osobě | Jednoznačně doporučeno – nízké TCO, vysoká spolehlivost a servisovatelnost |
 
 2. **Aspekty funkční bezpečnosti (Functional Safety dle ČSN EN ISO 13849-1):**
-   - Smí být obvod nouzového zastavení (E-Stop) lisu zapojen pouze do standardního softwarového vstupu běžného PLC bez použití certifikovaného bezpečnostního relé nebo bezpečnostního PLC (Safety PLC)? 
-     - *Odpověď (Ano / Ne) a technické zdůvodnění:* `...`
-   - Jakým způsobem musí být nouzový okruh správně hardwarově vyřešen, aby splňoval požadavky na bezpečné odpojení silových pohonů?
-     - *Vysvětlení:* `...`
+    - Smí být obvod nouzového zastavení (E-Stop) lisu zapojen pouze do standardního softwarového vstupu běžného PLC bez použití certifikovaného bezpečnostního relé nebo bezpečnostního PLC (Safety PLC)? 
+      - *Odpověď (Ano / Ne) a technické zdůvodnění:* `Ne. Standardní PLC nemá certifikovanou bezpečnostní architekturu (např. dvoukanálové zpracování s křížovou kontrolou). Při zaseknutí procesoru, chybě v programu nebo spečení výstupního relé PLC by nedošlo k zastavení nebezpečného pohybu lisu.`
+    - Jakým způsobem musí být nouzový okruh správně hardwarově vyřešen, aby splňoval požadavky na bezpečné odpojení silových pohonů?
+      - *Vysvětlení:* `Musí být zapojen přes certifikované bezpečnostní relé nebo Safety PLC se dvoukanálovým vstupem z E-Stopu. Výstupní kontakty bezpečnostního prvku (nuceně vedené) pak musí přímo a hardwarově přerušit silové napájení hlavních stykačů motorů a pohonů, nezávisle na běžném řídicím programu PLC.`
 
 > :key: **Vysvětlení pojmů a odborné zdroje:**
 > - **TCO (Total Cost of Ownership):** Celkové náklady na vlastnictví zařízení po celou dobu jeho životního cyklu, zahrnující pořizovací náklady (CAPEX), náklady na instalaci, vývoj, školení personálu, údržbu, náhradní díly a ztráty způsobené odstávkami výroby (OPEX).
@@ -490,4 +526,4 @@ Představte si, že management výrobní firmy zvažuje dvě alternativy řízen
 Co znamená pojem **MTBF (Mean Time Between Failures – střední doba mezi poruchami)** u průmyslových PLC modulů a jaký má vliv provozní teplota v rozváděči (např. nárůst z 25 °C na 55 °C) na životnost elektrolytických kondenzátorů ve spínaných zdrojích PLC podle tzv. Arrheniova pravidla?
 
 *Vaše odpověď:*
-`...`
+`MTBF je statistický ukazatel spolehlivosti, který udává průměrnou dobu bezporuchového provozu zařízení mezi dvěma po sobě jdoucími poruchami. Podle Arrheniova pravidla se rychlost chemické degradace (vysychání elektrolytu v kondenzátorech) přibližně zdvojnásobí s každým nárůstem teploty o 10 °C. Zvýšení teploty v rozváděči o 30 °C (z 25 °C na 55 °C) tak sníží životnost elektrolytických kondenzátorů 2^3 = 8krát (na 1/8 původní životnosti), což dramaticky snižuje celkové MTBF zdroje i celého PLC.`
